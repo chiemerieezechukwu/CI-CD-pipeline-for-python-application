@@ -1,0 +1,9 @@
+## dockerfile is built based on python:3.7-alpine, created a workdir that can be accesed from inside the container using exec -it,the copy commands sends copies of the requirements.txt and all the contents of the current directory 004-challange to the /webapp directory in the container.
+
+FROM python:3.7-alpine
+WORKDIR /webapp
+COPY requirements.txt . 
+RUN pip install -r requirements.txt
+COPY . /webapp
+CMD ["gunicorn", "-w 4", "-b", "0.0.0.0:8000", "main:app"] 
+

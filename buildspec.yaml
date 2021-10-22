@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo installing requirements...    
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $aws_account_id.dkr.ecr.eu-central-1.amazonaws.com
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+  build:
+    commands:
+      - echo Build started on `date` ...
+      - echo Building the Docker image...
+      - echo $REPOSITORY_URI
+      - echo exposing ports $PORT_ARG
+      - docker build -t $REPOSITORY_URI:$image_tag app
+      
+  
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images ....
+      - docker push $REPOSITORY_URI:$image_tag
+      #- docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' $container_name $REPOSITORY_URI:$image_tag > imagedefinitions.json
+      - cat imagedefinitions.json 
+artifacts:
+    files: imagedefinitions.json
+     
