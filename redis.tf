@@ -38,7 +38,7 @@ resource "aws_ecs_service" "redis_service" {
   launch_type     = "FARGATE"
   network_configuration {
     subnets          = var.subnets-list
-    security_groups  = [aws_security_group.container_sg.id]
+    security_groups  = [aws_security_group.redis_sg.id]
     assign_public_ip = true
   }
 }

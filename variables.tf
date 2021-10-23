@@ -39,5 +39,10 @@ variable "REGION" {
   default     = "eu-central-1"
 }
 
+variable "lbtype" {
+  description = "load balancer type, can be application , network or gateway "
+  default     = "application"
+}
+
 
 

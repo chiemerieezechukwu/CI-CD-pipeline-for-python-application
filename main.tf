@@ -23,6 +23,11 @@ resource "null_resource" "docker_file" {
   }
 }
 
+#create log group for ecs
+resource "aws_cloudwatch_log_group" "logs" {
+  name = local.cloudwatch-logs
+}
+
 #Create the ecs cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = local.ecs_cluster_name
@@ -54,23 +59,44 @@ resource "aws_ecs_task_definition" "Task" {
           containerPort = 8000
           hostPort      = 8000
         }
+      ],
+
+      log_configuration = [
+        {
+          logDriver : "awslogs",
+          options : {
+            awslogs-group : aws_cloudwatch_log_group.logs.name,
+            awslogs-region : var.REGION,
+            awslogs-stream-prefix : "ecs"
+          }
+        }
       ]
     }
   ])
 }
 
+
+
+
 #Create the service
 resource "aws_ecs_service" "service" {
   name            = local.ecs_service_name
-  depends_on      = [aws_ecs_service.redis_service]
+  depends_on      = [aws_ecs_service.redis_service, aws_lb_listener.test_listener, aws_lb_target_group.test-tg]
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.Task.arn
-  desired_count   = 1
+  desired_count   = 2
   launch_type     = "FARGATE"
+
   network_configuration {
     subnets          = var.subnets-list
     security_groups  = [aws_security_group.container_sg.id]
     assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.test-tg.id
+    container_name   = local.container_name
+    container_port   = 8000
   }
 }
 
