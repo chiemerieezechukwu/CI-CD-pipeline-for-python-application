@@ -12,13 +12,13 @@ variable "image_tag" {
 
 variable "vpc-id" {
   description = "exisiting vpc-id which will be associated with the loadbalancer"
-  default     = "vpc-087b4e0167a2591a9"
+  default     = "vpc-0XXXXXXX91a9"
 }
 
 variable "subnets-list" {
   type        = list(string)
   description = "subnet ids to be associated  with the load balancer"
-  default     = ["subnet-0ad4947b529ea6577", "subnet-0056cb89cd49ab2e4"]
+  default     = ["subnet-0ad494XXXXXXXX7", "subnet-0056XXXXXXXX4"]
 }
 
 variable "TF_VERSION" {
@@ -30,7 +30,7 @@ variable "TF_VERSION" {
 variable "aws_account_id" {
   type        = string
   description = "aws account id."
-  default     = "314053136453"
+  default     = "314XXXXXXX"
 }
 
 variable "REGION" {
