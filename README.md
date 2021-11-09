@@ -10,4 +10,5 @@
    - Building a CI/CD pipeline with CodeCommit, CodeBuild and Codepipeline
 
 
-![image](https://user-images.githubusercontent.com/62175920/140663263-e6db5d11-fe8a-4096-81a7-5435337aaa40.png)
+![image](https://user-images.githubusercontent.com/62175920/140918707-2691f9b7-0c81-42d0-8879-7371acbf289d.png)
+
