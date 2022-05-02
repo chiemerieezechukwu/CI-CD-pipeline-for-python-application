@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "Task" {
         }
       ],
 
-      log_configuration = [
+      logConfiguration = [
         {
           logDriver : "awslogs",
           options : {
